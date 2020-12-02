@@ -12,9 +12,10 @@ func main() {
     passwordsMatchPolicyCount := 0
     input := readInput()
     inputLines := strings.Split(input, "\n")
+    indexLast := 0
 
     for index, line := range inputLines {
-      fmt.Println("Doing line: ", index, line)
+      //fmt.Println("Doing line: ", index, line)
       lineParts := strings.Split(line, " ")
 
       policyTimesWhole := lineParts[0]
@@ -25,7 +26,7 @@ func main() {
       policyChar := string(lineParts[1][0]) // Second Part, only first Char relevant (convert from byte)
       password := lineParts[2]
 
-      fmt.Println("rangeStart: ", rangeStart, " rangeEnd: ", rangeEnd, " policyChar: ", policyChar, " password:", password)
+      //fmt.Println("rangeStart: ", rangeStart, " rangeEnd: ", rangeEnd, " policyChar: ", policyChar, " password:", password)
 
       countOfPolicyChar := strings.Count(password, policyChar)
       
@@ -34,11 +35,13 @@ func main() {
         passwordsMatchPolicyCount++
         //fmt.Println("password Match Policy")
       } else {
-        fmt.Println("password does not Match Policy")
+        //fmt.Println("password does not Match Policy")
       }
 
-      fmt.Println("passwordsMatchPolicyCount: ", passwordsMatchPolicyCount)
+      indexLast = index
     }
+
+    fmt.Println("passwords match policy count: ", passwordsMatchPolicyCount, " of total ", indexLast + 1)
 }
 
 func readInput() string {
