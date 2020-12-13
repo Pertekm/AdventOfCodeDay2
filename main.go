@@ -4,6 +4,7 @@ import (
   "io/ioutil"
   "strings"
   "strconv"
+  "unicode/utf8"
 )
 
 func main() {
@@ -20,17 +21,18 @@ func main() {
 
       policyTimesWhole := lineParts[0]
       policyTimesRanges := strings.Split(policyTimesWhole, "-")
-      rangeStart, _ := strconv.Atoi(policyTimesRanges[0])
-      rangeEnd, _ := strconv.Atoi(policyTimesRanges[1])
+      policyCharPosition1, _ := strconv.Atoi(policyTimesRanges[0])
+      policyCharPosition2, _ := strconv.Atoi(policyTimesRanges[1])
 
       policyChar := string(lineParts[1][0]) // Second Part, only first Char relevant (convert from byte)
       password := lineParts[2]
 
-      //fmt.Println("rangeStart: ", rangeStart, " rangeEnd: ", rangeEnd, " policyChar: ", policyChar, " password:", password)
+      //fmt.Println("password: ", password, " len: ", len(password))
+      position1Matches := utf8.RuneCountInString(string(password)) >= policyCharPosition1 && string(password[policyCharPosition1-1]) == policyChar
 
-      countOfPolicyChar := strings.Count(password, policyChar)
-      
-      if countOfPolicyChar >= rangeStart && countOfPolicyChar <= rangeEnd {
+      position2Matches := utf8.RuneCountInString(string(password)) >= policyCharPosition2 && string(password[policyCharPosition2-1]) == policyChar
+
+      if(position1Matches && !position2Matches) || (!position1Matches && position2Matches) {
         // passwordMatchesPolicy
         passwordsMatchPolicyCount++
         //fmt.Println("password Match Policy")
